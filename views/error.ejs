@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error</title>
+    <style>
+        /* Common Futuristic CSS for all pages */
+        :root {
+            --primary-color: #00b7ff;
+            --secondary-color: #6d17cb;
+            --background-color: #0a0e17;
+            --card-bg: rgba(16, 23, 41, 0.8);
+            --text-color: #e0e6ff;
+            --accent-color: #ff2975;
+            --success-color: #00ffaa;
+            --error-color: #ff3860;
+            --font-primary: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            --transition-speed: 0.3s;
+            --glow-effect: 0 0 10px rgba(0, 183, 255, 0.5);
+        }
+
+        body {
+            background: var(--background-color);
+            background-image:
+                radial-gradient(circle at 10% 20%, rgba(0, 183, 255, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(109, 23, 203, 0.05) 0%, transparent 20%);
+            color: var(--text-color);
+            font-family: var(--font-primary);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            line-height: 1.6;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-weight: 700;
+            text-align: center;
+            margin-top: 2rem;
+            letter-spacing: 1px;
+            text-shadow: 0 0 15px rgba(0, 183, 255, 0.3);
+            position: relative;
+            display: inline-block;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+        }
+
+        h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: all var(--transition-speed);
+            position: relative;
+            padding: 0.3rem 0.5rem;
+            border-radius: 4px;
+        }
+
+        a:hover {
+            color: var(--accent-color);
+            text-shadow: 0 0 8px rgba(255, 41, 117, 0.5);
+        }
+
+        a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--accent-color);
+            transition: width var(--transition-speed);
+        }
+
+        a:hover::after {
+            width: 100%;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 2rem;
+        }
+
+        button {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+            outline: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.9rem;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--glow-effect), 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        input,
+        textarea {
+            background-color: rgba(16, 23, 41, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: var(--text-color);
+            padding: 0.8rem 1rem;
+            width: 100%;
+            margin-bottom: 1rem;
+            transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        input:focus,
+        textarea:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(0, 183, 255, 0.2);
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: rgba(224, 230, 255, 0.5);
+        }
+
+        form {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto 2rem auto;
+            padding: 2rem;
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Messages specific styles */
+        li {
+            background: linear-gradient(135deg, rgba(0, 183, 255, 0.05), rgba(109, 23, 203, 0.05));
+            border: 1px solid rgba(0, 183, 255, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            list-style: none;
+            position: relative;
+            transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        li:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+            border-color: var(--primary-color);
+        }
+
+        li p {
+            margin: 0.5rem 0;
+            opacity: 0.9;
+        }
+
+        li p:last-child {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            opacity: 0.7;
+            text-align: right;
+        }
+
+        ul {
+            padding: 0;
+        }
+
+        /* Error page specific */
+        .error-container {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .error-message {
+            color: var(--error-color);
+            border-left: 4px solid var(--error-color);
+            padding-left: 1rem;
+            margin: 2rem 0;
+            background: rgba(255, 56, 96, 0.05);
+            padding: 1rem;
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* Login/Register specific */
+        .auth-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 80vh;
+        }
+
+        .auth-form {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .auth-links {
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        .form-error {
+            color: var(--error-color);
+            background: rgba(255, 56, 96, 0.1);
+            padding: 0.8rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        /* Home page specific */
+        .login-register {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .login-register a {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            background: var(--card-bg);
+            border: 1px solid rgba(0, 183, 255, 0.3);
+            border-radius: 8px;
+            transition: all var(--transition-speed);
+        }
+
+        .login-register a:hover {
+            background: rgba(0, 183, 255, 0.1);
+            transform: translateY(-3px);
+            box-shadow: var(--glow-effect);
+        }
+
+        .login-register a::after {
+            display: none;
+        }
+
+        /* Message submit form */
+        .message-form-container {
+            margin-bottom: 2rem;
+        }
+
+        .message-actions {
+            display: flex;
+            justify-content: space-between;
+            margin: 1rem 0 2rem 0;
+        }
+
+        .logout-btn {
+            background: linear-gradient(135deg, var(--error-color), #ff7730);
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        }
+
+        textarea[name="content"] {
+            min-height: 100px;
+            resize: vertical;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Error</h1>
+    <p>
+        <%= message %>
+    </p>
+</body>
+
+</html>
