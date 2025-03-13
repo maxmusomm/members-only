@@ -4,14 +4,12 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const {
-    DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME } = process.env;
+    DATABASE_URL } = process.env;
 
 const pool = new Pool({
-    host: DB_HOST || 'localhost',
-    port: DB_PORT || 4000,
-    database: DB_NAME || 'membership',
-    user: DB_USER || 'postgres',
-    password: DB_PASSWORD || 'MMaster(1',
+    connectionString: DATABASE_URL,
+    ssl: { rejectUnauthorized: false } // Required for Render/Supabase connection
 });
+
 
 module.exports = pool;
