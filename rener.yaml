@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: members-only
+    env: node
+    buildCommand: npm install
+    startCommand: node app.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false # This means you'll need to enter it manually
+      - key: SESSION_SECRET
+        generateValue: false # Render will generate a random value

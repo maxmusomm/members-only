@@ -3,8 +3,8 @@ const path = require('path');
 // const db = require('./db/query');
 const passport_config = require('./config/passport-config');
 const passport = require('passport');
-const pgSession = require('connect-pg-simple')(session);
 const session = require('express-session');
+const pgSession = require('connect-pg-simple')(session);
 const flash = require('express-flash');
 const methodOverride = require('method-override')
 const dotenv = require('dotenv');
@@ -38,6 +38,14 @@ app.use(session({
 app.use(flash());
 app.use(methodOverride('_method'));
 
+// Near the top of app.js
+app.use((req, res, next) => {
+    if (process.env.NODE_ENV === 'production') {
+        console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
+    }
+    next();
+});
+
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -61,6 +69,10 @@ app.delete('/messages/logout', (req, res, next) => {
     });
 })
 
+// Add this before your error handler
+app.get('/health', (req, res) => {
+    res.status(200).send('OK');
+});
 
 // error handler
 app.use(function (err, req, res, next) {
