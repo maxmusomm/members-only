@@ -17,11 +17,11 @@ router.post('/', async (req, res) => {
         const hashedPassword = await bycrypt.hash(password, 10);
         await db.createUser(name, hashedPassword);
         // console.log(name, hashedPassword)
-        res.redirect('/login');
+        return res.redirect('/login');
     } catch (error) {
         console.error('Error registering user:', error);
         res.status(500).send('Internal Server Error');
-        res.redirect('/error.ejs');
+        return res.redirect('/error.ejs');
     }
 });
 

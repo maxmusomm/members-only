@@ -4,7 +4,7 @@ const passport = require('passport');
 const { checkNotAuthentication } = require('../config/passport-config');
 
 router.get('/', checkNotAuthentication, (req, res) => {
-  res.render('login', { greeting: "Welcome Back!" });
+  return res.render('login', { greeting: "Welcome Back!" });
 })
 
 router.post('/', passport.authenticate('local', {

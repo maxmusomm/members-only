@@ -71,7 +71,7 @@ app.delete('/messages/logout', (req, res, next) => {
 
 // Add this before your error handler
 app.get('/health', (req, res) => {
-    res.status(200).send('OK');
+    return res.status(200).send('OK');
 });
 
 // error handler
@@ -82,7 +82,7 @@ app.use(function (err, req, res, next) {
 
     // render the error page
     res.status(err.status || 500);
-    res.render('error');
+    return res.render('error');
 });
 
 const PORT = process.env.PORT || 3000;

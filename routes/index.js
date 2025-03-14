@@ -5,7 +5,7 @@ const db = require('../db/query');
 
 /* GET home page. */
 router.get('/', checkNotAuthentication, async (req, res) => {
-  res.render('index', { title: 'Express' });
+  return res.render('index', { title: 'Express' });
 });
 
 module.exports = router;

@@ -16,14 +16,14 @@ router.get('/', checkAuthentication, async (req, res) => {
     }))
 
 
-    res.render('messages', { messagesTitle: "Messages", messages: messagesWithUser || [] });
+    return res.render('messages', { messagesTitle: "Messages", messages: messagesWithUser || [] });
 });
 
 router.post('/', checkAuthentication, async (req, res) => {
     const { title, content } = req.body;
     const userid = await db.getUserByName(req.user.name);
     await db.createMessage(title, content, userid.id);
-    res.redirect('/messages');
+    return res.redirect('/messages');
 })
 
 
