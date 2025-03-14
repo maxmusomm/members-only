@@ -7,7 +7,7 @@ const { checkAuthentication } = require('../config/passport-config');
 router.get('/', checkAuthentication, async (req, res) => {
     const messages = await db.getAllMessages();
     const messagesWithUser = await Promise.all(messages.map(async (msg) => {
-        const user = await db.getUserByName(req.user.name);
+        const user = await db.getUserById(msg.user_id); //req.user.name
 
         return {
             ...msg,
