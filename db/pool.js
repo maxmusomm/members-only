@@ -3,11 +3,8 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-const {
-    DATABASE_URL } = process.env;
-
 const pool = new Pool({
-    connectionString: DATABASE_URL,
+    connectionString: process.env.DATABASE_URL,
     ssl: { rejectUnauthorized: false } // Required for Render/Supabase connection
 });
 

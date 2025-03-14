@@ -1,19 +1,20 @@
 const express = require('express');
-const pgSession = require('connect-pg-simple')(session);
 const path = require('path');
 // const db = require('./db/query');
 const passport_config = require('./config/passport-config');
 const passport = require('passport');
+const pgSession = require('connect-pg-simple')(session);
 const session = require('express-session');
 const flash = require('express-flash');
 const methodOverride = require('method-override')
 const dotenv = require('dotenv');
-const pool = require('./db/pool');
 
 const indexRouter = require('./routes/index');
 const loginRouter = require('./routes/login');
 const registerRouter = require('./routes/register');
 const messagesRouter = require('./routes/messages');
+
+const pool = require('./db/pool');
 
 const app = express();
 dotenv.config();
@@ -22,11 +23,17 @@ dotenv.config();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(session({
-    store: new pgSession({ pool }), // Store sessions in PostgreSQL
-    secret: process.env.SESSION_SECRET, // Fix typo from SESSION_SECRECT
+    store: new pgSession({
+        pool,
+        tableName: 'session' // You need to create this table in your database
+    }),
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false } // Set to true if using HTTPS
+    cookie: {
+        secure: process.env.NODE_ENV === 'production',
+        maxAge: 14 * 24 * 60 * 60 * 1000 // 14 days
+    }
 }));
 app.use(flash());
 app.use(methodOverride('_method'));
@@ -67,6 +74,6 @@ app.use(function (err, req, res, next) {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Server running on http://0.0.0.0:${PORT}`);
+app.listen(PORT, () => {
+    console.log('Example app listening on port 3000!');
 });
