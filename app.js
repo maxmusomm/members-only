@@ -19,6 +19,15 @@ const pool = require('./db/pool');
 const app = express();
 dotenv.config();
 
+// Add this near the top of your app.js
+app.use((req, res, next) => {
+    const originalSend = res.send;
+    res.send = function () {
+        console.log('Response sent:', req.method, req.url);
+        originalSend.apply(res, arguments);
+    };
+    next();
+});
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -82,7 +91,7 @@ app.use(function (err, req, res, next) {
 
     // render the error page
     res.status(err.status || 500);
-    return res.render('error');
+    res.render('error');
 });
 
 const PORT = process.env.PORT || 3000;

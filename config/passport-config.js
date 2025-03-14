@@ -38,14 +38,14 @@ const checkAuthentication = (req, res, next) => {
     if (req.isAuthenticated()) {
         return next();
     }
-    return res.redirect('/login');
+    res.redirect('/login');
 }
 
 const checkNotAuthentication = (req, res, next) => {
     if (req.isAuthenticated()) {
         return res.redirect('/messages');
     }
-    return next();
+    next();
 }
 
 module.exports = { initialize, checkAuthentication, checkNotAuthentication };

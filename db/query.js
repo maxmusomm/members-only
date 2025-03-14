@@ -6,8 +6,13 @@ const getAllUsers = async () => {
 }
 
 const getUserById = async (_id) => {
-    const { rows } = await pool.query('SELECT * FROM public.users WHERE id = $1', [_id]);
-    return rows[0];
+    try {
+        const { rows } = await pool.query('SELECT * FROM public.users WHERE id = $1', [_id]);
+        return rows[0];
+    } catch (error) {
+        console.error("Error in getUserById:", error);
+        throw error;
+    }
 }
 
 const createUser = async (name, password) => {
