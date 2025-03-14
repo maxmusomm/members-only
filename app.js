@@ -25,9 +25,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(session({
     store: new pgSession({
         pool,
-        tableName: 'session' // You need to create this table in your database
+        tableName: 'session'
     }),
-    secret: process.env.SESSION_SECRET,
+    secret: process.env.SESSION_SECRET || 'cat', // Add fallback for development
     resave: false,
     saveUninitialized: false,
     cookie: {
