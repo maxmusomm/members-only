@@ -4,7 +4,6 @@ const path = require('path');
 const passport_config = require('./config/passport-config');
 const passport = require('passport');
 const session = require('express-session');
-const pgSession = require('connect-pg-simple')(session);
 const flash = require('express-flash');
 const methodOverride = require('method-override')
 const dotenv = require('dotenv');
@@ -14,46 +13,15 @@ const loginRouter = require('./routes/login');
 const registerRouter = require('./routes/register');
 const messagesRouter = require('./routes/messages');
 
-const pool = require('./db/pool');
-
 const app = express();
 dotenv.config();
 
-// Add this near the top of your app.js
-app.use((req, res, next) => {
-    const originalSend = res.send;
-    res.send = function () {
-        console.log('Response sent:', req.method, req.url);
-        originalSend.apply(res, arguments);
-    };
-    next();
-});
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(session({
-    store: new pgSession({
-        pool,
-        tableName: 'session'
-    }),
-    secret: process.env.SESSION_SECRET || 'cat', // Add fallback for development
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-        secure: process.env.NODE_ENV === 'production',
-        maxAge: 14 * 24 * 60 * 60 * 1000 // 14 days
-    }
-}));
+app.use(session({ secret: "secret", resave: false, saveUninitialized: false }));
 app.use(flash());
 app.use(methodOverride('_method'));
-
-// Near the top of app.js
-app.use((req, res, next) => {
-    if (process.env.NODE_ENV === 'production') {
-        console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
-    }
-    next();
-});
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -78,11 +46,6 @@ app.delete('/messages/logout', (req, res, next) => {
     });
 })
 
-// Add this before your error handler
-app.get('/health', (req, res) => {
-    return res.status(200).send('OK');
-});
-
 // error handler
 app.use(function (err, req, res, next) {
     // set locals, only providing error in development
@@ -96,5 +59,5 @@ app.use(function (err, req, res, next) {
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log('Example app listening on port 3000!');
+    console.log(`Example app listening on port ${PORT}!`);
 });
